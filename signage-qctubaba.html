@@ -32,7 +32,13 @@
       radial-gradient(70% 55% at 82% 88%, rgba(52,208,160,.10), transparent 62%),
       radial-gradient(70% 55% at 15% 82%, rgba(52,208,160,.07), transparent 60%),
       radial-gradient(120% 90% at 50% 120%, rgba(0,0,0,.55), transparent 55%);
-    mix-blend-mode:screen}
+    mix-blend-mode:screen;animation:auraPulse 12s ease-in-out infinite}
+  /* slow sweeping light ray across the whole screen */
+  .rays{position:fixed;inset:-20%;z-index:1;pointer-events:none;mix-blend-mode:screen;opacity:.5;
+    background:conic-gradient(from 200deg at 50% 30%,
+      transparent 0deg,rgba(245,224,112,.06) 22deg,transparent 44deg,
+      transparent 180deg,rgba(52,208,160,.05) 210deg,transparent 240deg);
+    animation:spin 60s linear infinite}
   .vignette{position:fixed;inset:0;z-index:1;pointer-events:none;
     box-shadow:inset 0 0 22vh 8vh rgba(2,6,14,.75)}
 
@@ -97,15 +103,17 @@
     width:min(52vw,560px);margin:min(1vh,8px) 0}
   .rule .ln{height:1px;flex:1;background:linear-gradient(90deg,transparent,rgba(245,224,112,.55),transparent)}
   .rule .dia{width:9px;height:9px;transform:rotate(45deg);
-    background:var(--gold);box-shadow:0 0 12px rgba(245,224,112,.8)}
+    background:var(--gold);box-shadow:0 0 12px rgba(245,224,112,.8);
+    animation:diaPulse 3s ease-in-out infinite}
 
   .welcome{font-family:'Cormorant Garamond',serif;font-weight:500;letter-spacing:.42em;
-    text-transform:uppercase;font-size:clamp(12px,1.7vw,24px);color:rgba(244,236,216,.72)}
+    text-transform:uppercase;font-size:clamp(12px,1.7vw,24px);color:rgba(244,236,216,.72);
+    animation:trackBreathe 6s ease-in-out infinite}
   .pondok{font-family:'Cormorant Garamond',serif;font-weight:700;line-height:1.02;
     font-size:clamp(26px,4.6vw,70px);letter-spacing:.01em;
     background:linear-gradient(180deg,#fffef8,#f3ead4 55%,#d9c9a0);
     -webkit-background-clip:text;background-clip:text;color:transparent;
-    text-shadow:0 2px 40px rgba(0,0,0,.4)}
+    animation:titleGlow 7s ease-in-out infinite}
   .pondok b{background:linear-gradient(180deg,#fff7d8,var(--gold) 55%,var(--gold-deep));
     -webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700}
   .tagline{font-family:'Jost',sans-serif;font-weight:300;letter-spacing:.16em;
@@ -134,6 +142,11 @@
     -webkit-background-clip:text;background-clip:text;color:transparent}
   .stat .num.em{background:linear-gradient(180deg,#c8ffe9,var(--emerald) 55%,var(--emerald-deep));
     -webkit-background-clip:text;background-clip:text;color:transparent}
+  .stat .num.dual{display:flex;align-items:baseline;justify-content:center;gap:.16em;
+    font-size:clamp(24px,3.3vw,48px)}
+  .stat .num.dual .sep{font-size:.5em;opacity:.4;font-weight:400}
+  .stat .num.dual .g2{background:linear-gradient(180deg,#c8ffe9,var(--emerald) 55%,var(--emerald-deep));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
   .stat .lbl{margin-top:6px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
     font-size:clamp(9px,1.05vw,14px);color:rgba(244,236,216,.66)}
   .stat .sub{margin-top:3px;font-weight:300;font-size:clamp(8px,.92vw,12px);
@@ -154,6 +167,22 @@
   .foot-loc{font-weight:300;letter-spacing:.22em;text-transform:uppercase;
     font-size:clamp(9px,1.1vw,14px);color:rgba(244,236,216,.45)}
 
+  /* fullscreen toggle button */
+  .fsbtn{position:fixed;right:3.4vh;bottom:3.4vh;z-index:20;
+    width:clamp(38px,3.2vw,48px);height:clamp(38px,3.2vw,48px);padding:0;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+    border-radius:12px;color:var(--gold);
+    background:rgba(8,16,30,.5);border:1px solid rgba(245,224,112,.3);
+    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+    box-shadow:0 6px 20px rgba(0,0,0,.4);
+    transition:opacity .5s ease,transform .2s ease,background .3s,border-color .3s}
+  .fsbtn:hover{background:rgba(8,16,30,.82);border-color:rgba(245,224,112,.65);transform:translateY(-2px)}
+  .fsbtn svg{width:54%;height:54%;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .fsbtn.hide{opacity:0;pointer-events:none}
+  .fsbtn .ic-exit{display:none}
+  body.fs .fsbtn .ic-enter{display:none}
+  body.fs .fsbtn .ic-exit{display:block}
+
   /* progress line for stat rotation */
   .tick{position:fixed;left:0;bottom:0;height:2px;z-index:4;
     background:linear-gradient(90deg,var(--gold-deep),var(--gold),var(--emerald));
@@ -169,6 +198,12 @@
   @keyframes breathe{0%,100%{filter:drop-shadow(0 4px 26px rgba(245,224,112,.24));transform:translateY(0)}
     50%{filter:drop-shadow(0 6px 40px rgba(245,224,112,.42));transform:translateY(-6px)}}
   @keyframes shine{0%{background-position:120% 0}100%{background-position:-120% 0}}
+  @keyframes auraPulse{0%,100%{opacity:.82}50%{opacity:1}}
+  @keyframes titleGlow{0%,100%{filter:drop-shadow(0 2px 30px rgba(0,0,0,.45))}
+    50%{filter:drop-shadow(0 2px 44px rgba(245,224,112,.30))}}
+  @keyframes trackBreathe{0%,100%{letter-spacing:.42em}50%{letter-spacing:.52em}}
+  @keyframes diaPulse{0%,100%{box-shadow:0 0 12px rgba(245,224,112,.8);transform:rotate(45deg) scale(1)}
+    50%{box-shadow:0 0 24px rgba(245,224,112,1);transform:rotate(45deg) scale(1.3)}}
 
   /* portrait notice */
   .rotate{position:fixed;inset:0;z-index:50;display:none;
@@ -191,6 +226,7 @@
     .pondok{font-size:clamp(24px,4.2vw,58px)}
     .hero{gap:min(1.1vh,11px)}
     .stat .num{font-size:clamp(26px,3.6vw,50px)}
+    .stat .num.dual{font-size:clamp(22px,3vw,42px)}
     .stat{padding:10px 16px 9px}
     .stage{padding:min(3vh,30px) min(6vw,90px)}
     .rule{margin:2px 0}
@@ -200,6 +236,7 @@
 <body>
   <canvas id="bg"></canvas>
   <div class="aura"></div>
+  <div class="rays"></div>
   <div class="vignette"></div>
 
   <div class="frame"></div>
@@ -212,15 +249,6 @@
     <!-- TOP -->
     <div class="topbar reveal" data-d="120">
       <div class="mark">
-        <svg class="seal" viewBox="0 0 100 100" aria-hidden="true">
-          <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#fff7d8"/><stop offset="1" stop-color="#c9a227"/></linearGradient></defs>
-          <g fill="none" stroke="url(#g1)" stroke-width="3">
-            <circle cx="50" cy="50" r="44"/>
-            <path d="M50 10 L61 39 L92 39 L67 58 L77 88 L50 69 L23 88 L33 58 L8 39 L39 39 Z"/>
-            <circle cx="50" cy="50" r="16"/>
-          </g>
-        </svg>
         <span>Qur'anic Center Tubaba</span>
       </div>
       <div class="clock" id="clock">--:--</div>
@@ -264,7 +292,7 @@
     <div class="stats reveal" data-d="1280" id="stats">
       <div class="stat"><div class="num" data-to="294">0</div><div class="lbl">Santri Aktif</div><div class="sub">Putra &amp; Putri</div></div>
       <div class="stat"><div class="num" data-to="2017" data-plain="1">0</div><div class="lbl">Tahun Berdiri</div><div class="sub">± 9 Tahun Berkhidmat</div></div>
-      <div class="stat"><div class="num em" data-to="18">0</div><div class="lbl">Khatam 30 Juz</div><div class="sub">Hafidz / Hafidzah</div></div>
+      <div class="stat"><div class="num dual"><span data-to="136">0</span><span class="sep">·</span><span class="g2" data-to="158">0</span></div><div class="lbl">Santriwan &amp; Santriwati</div><div class="sub">Putra &amp; Putri</div></div>
       <div class="stat"><div class="num em" data-to="312">0</div><div class="lbl">Jumlah Setoran</div><div class="sub">Hafalan Santri</div></div>
     </div>
 
@@ -282,6 +310,12 @@
   </div>
 
   <div class="tick" id="tick"></div>
+
+  <!-- fullscreen toggle -->
+  <button class="fsbtn" id="fsBtn" title="Layar Penuh" aria-label="Layar Penuh">
+    <svg class="ic-enter" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+    <svg class="ic-exit" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>
+  </button>
 
   <!-- portrait rotate -->
   <div class="rotate" id="rotate">
@@ -328,7 +362,7 @@
     requestAnimationFrame(step);
   }
   setTimeout(function(){
-    document.querySelectorAll('#stats .num').forEach(function(el,i){
+    document.querySelectorAll('#stats [data-to]').forEach(function(el,i){
       var to=parseInt(el.getAttribute('data-to'),10);
       var plain=el.getAttribute('data-plain')==='1';
       setTimeout(function(){countUp(el,to,1500,plain);},i*180);
@@ -354,12 +388,40 @@
     requestAnimationFrame(loop);
   })(0);
 
+  /* ---------- fullscreen toggle ---------- */
+  var fsBtn=document.getElementById('fsBtn');
+  function isFs(){return document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement;}
+  fsBtn.addEventListener('click',function(e){
+    e.stopPropagation();
+    if(!isFs()){
+      var el=document.documentElement;
+      (el.requestFullscreen||el.webkitRequestFullscreen||el.mozRequestFullScreen||function(){}).call(el);
+    }else{
+      (document.exitFullscreen||document.webkitExitFullscreen||document.mozCancelFullScreen||function(){}).call(document);
+    }
+  });
+  function syncFs(){document.body.classList.toggle('fs',!!isFs());}
+  ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange'].forEach(function(ev){
+    document.addEventListener(ev,syncFs);
+  });
+  /* auto-hide the button after inactivity, reveal on interaction */
+  var hideT;
+  function poke(){
+    fsBtn.classList.remove('hide');
+    clearTimeout(hideT);
+    hideT=setTimeout(function(){fsBtn.classList.add('hide');},4000);
+  }
+  ['mousemove','touchstart','keydown','click'].forEach(function(ev){
+    window.addEventListener(ev,poke,{passive:true});
+  });
+  poke();
+
   /* ============================================================
      LIVE WALLPAPER — animated canvas background
      starfield + rising gold dust + drifting nebula + shooting light
      ============================================================ */
   var cv=document.getElementById('bg'),cx=cv.getContext('2d');
-  var W,H,DPR,stars=[],dust=[],blobs=[],shoot=[],lastShoot=0;
+  var W,H,DPR,stars=[],dust=[],blobs=[],orbs=[],shoot=[],lastShoot=0;
 
   function rand(a,b){return a+Math.random()*(b-a);}
 
@@ -384,33 +446,51 @@
   }
   function build(){
     var area=(W*H)/(DPR*DPR);
-    var nStars=Math.min(240,Math.round(area/9000));
-    var nDust=Math.min(70,Math.round(area/26000));
-    stars=[];dust=[];
+    var nStars=Math.min(280,Math.round(area/8000));
+    var nDust=Math.min(95,Math.round(area/19000));
+    var nOrbs=Math.min(16,Math.round(area/90000));
+    stars=[];dust=[];orbs=[];
     for(var i=0;i<nStars;i++){
       stars.push({x:Math.random()*W,y:Math.random()*H,r:rand(.4,1.7)*DPR,
         a:rand(.2,.9),tw:rand(.6,2.2),ph:rand(0,6.28),
-        gold:Math.random()<0.22});
+        gold:Math.random()<0.24});
     }
     for(var j=0;j<nDust;j++){
       dust.push({x:Math.random()*W,y:Math.random()*H,r:rand(.8,2.4)*DPR,
         vy:rand(4,14)*DPR/60,sway:rand(.3,1.1),ph:rand(0,6.28),a:rand(.12,.5)});
     }
+    for(var k=0;k<nOrbs;k++){
+      orbs.push({x:Math.random()*W,y:Math.random()*H,r:rand(26,84)*DPR,
+        vx:rand(-.16,.16)*DPR,vy:rand(-.13,.13)*DPR,a:rand(.03,.09),
+        ph:rand(0,6.28),ps:rand(.25,.7),sp:Math.random()<.62?glowGold:glowEmerald});
+    }
     blobs=[
-      {x:W*.30,y:H*.28,r:Math.max(W,H)*.42,sp:glowEmerald,a:.10,dx:.018*DPR,dy:.012*DPR},
-      {x:W*.74,y:H*.72,r:Math.max(W,H)*.5,sp:glowGold,a:.09,dx:-.014*DPR,dy:-.01*DPR},
-      {x:W*.5,y:H*.05,r:Math.max(W,H)*.38,sp:glowGold,a:.08,dx:.01*DPR,dy:.014*DPR}
+      {x:W*.30,y:H*.28,r:Math.max(W,H)*.42,sp:glowEmerald,a:.10,dx:.018*DPR,dy:.012*DPR,ph:0.0},
+      {x:W*.74,y:H*.72,r:Math.max(W,H)*.5,sp:glowGold,a:.09,dx:-.014*DPR,dy:-.01*DPR,ph:2.1},
+      {x:W*.5,y:H*.05,r:Math.max(W,H)*.38,sp:glowGold,a:.08,dx:.01*DPR,dy:.014*DPR,ph:4.0}
     ];
   }
 
-  function drawBlobs(){
+  function drawBlobs(t){
     for(var i=0;i<blobs.length;i++){
       var b=blobs[i];
       b.x+=b.dx;b.y+=b.dy;
       if(b.x<-b.r||b.x>W+b.r)b.dx*=-1;
       if(b.y<-b.r||b.y>H+b.r)b.dy*=-1;
-      cx.globalAlpha=b.a;
+      cx.globalAlpha=b.a*(0.7+0.3*Math.sin(t*0.0004+b.ph));
       cx.drawImage(b.sp,b.x-b.r,b.y-b.r,b.r*2,b.r*2);
+    }
+    cx.globalAlpha=1;
+  }
+  function drawOrbs(t){
+    for(var i=0;i<orbs.length;i++){
+      var o=orbs[i];
+      o.x+=o.vx;o.y+=o.vy;
+      if(o.x<-o.r)o.x=W+o.r; else if(o.x>W+o.r)o.x=-o.r;
+      if(o.y<-o.r)o.y=H+o.r; else if(o.y>H+o.r)o.y=-o.r;
+      var a=o.a*(0.55+0.45*Math.sin(t*0.001*o.ps+o.ph));
+      cx.globalAlpha=a;
+      cx.drawImage(o.sp,o.x-o.r,o.y-o.r,o.r*2,o.r*2);
     }
     cx.globalAlpha=1;
   }
@@ -437,7 +517,7 @@
     cx.globalAlpha=1;
   }
   function drawShoot(t){
-    if(t-lastShoot>rand(5500,9000)&&shoot.length<2){
+    if(t-lastShoot>rand(2800,5200)&&shoot.length<3){
       lastShoot=t;
       var fromLeft=Math.random()<.5;
       shoot.push({x:fromLeft?rand(0,W*.4):rand(W*.6,W),y:rand(H*.05,H*.4),
@@ -464,7 +544,8 @@
     bg.addColorStop(0,'#060d1a');bg.addColorStop(.5,'#050b16');bg.addColorStop(1,'#04070f');
     cx.fillStyle=bg;cx.fillRect(0,0,W,H);
     cx.globalCompositeOperation='screen';
-    drawBlobs();
+    drawBlobs(t);
+    drawOrbs(t);
     drawStars(t);
     drawDust(t);
     drawShoot(t);
